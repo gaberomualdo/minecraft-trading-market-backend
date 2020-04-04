@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Minecraft Trading Market</title>
+
+        <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
+        <link rel="manifest" href="manifest.json" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png" />
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="stylesheet" href="assets/vendors/animate.css" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="stylesheet" href="assets/css/app.css" />
+    </head>
+    <body>
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <img src="assets/img/icon.png" alt="Minecraft Trading Market Logo" />
+                    <h1>Minecraft Trading Market</h1>
+                </div>
+                <div class="right">
+                    <button class="button create-trade">Create a Trade</button>
+                    <button class="button sign-out">Sign Out</button>
+                </div>
+            </nav>
+            <span class="navclear"></span>
+
+            <div class="modal-container animated create-trade-modal-container">
+                <div class="create-trade-modal animated">
+                    <button class="close-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path
+                                d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z"
+                            />
+                        </svg>
+                    </button>
+                    <h1 class="title">Create a Trade</h1>
+                    <input type="text" class="input" placeholder="Trade Title (what you are selling)" spellcheck="false" />
+                    <textarea class="input" placeholder="Trade Description (what goods you want, etc.)" spellcheck="false"></textarea>
+                    <input type="button" value="Create &amp; Post Trade" class="button" />
+                    <p class="description">You cannot delete a trade after it is posted.</p>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <p class="left">Built by <a href="https://xtrp.io/">Fred Adams</a></p>
+                <p class="right">&copy; 2020&ndash;Present</p>
+            </footer>
+        </div>
+
+        <script src="assets/js/global.js"></script>
+        <script src="assets/js/app.js"></script>
+    </body>
+</html>

@@ -4,6 +4,10 @@ const verifyCredentials = async () => {
     // get credentials from local storage
     const credentials = JSON.parse(localStorage.getItem('minecraft-trading-market-credentials'));
 
+    if (!credentials) {
+        return 'denied';
+    }
+
     // create authorization header
     const authorizationHeader = 'Basic ' + btoa(credentials.username + ':' + credentials.pin);
 
@@ -34,11 +38,15 @@ const setCredentials = (username, pin) => {
 
 // if credentials are valid, go to logged in homepage
 window.addEventListener('load', () => {
-    if (!window.location.href.toString().endsWith('home.html')) {
-        (async () => {
-            if ((await verifyCredentials()) == 'accepted') {
-                window.open('home.html', '_self');
+    (async () => {
+        if ((await verifyCredentials()) == 'accepted') {
+            if (!window.location.href.toString().endsWith('app.html')) {
+                window.open('app.html', '_self');
             }
-        })();
-    }
+        } else {
+            if (!window.location.href.toString().endsWith('/')) {
+                window.open('/../', '_self');
+            }
+        }
+    })();
 });

@@ -20,7 +20,7 @@ formElm.addEventListener('submit', async (e) => {
 
     switch (authResponse) {
         case 'accepted':
-            window.open('home.html', '_self');
+            window.open('app.html', '_self');
             break;
         case 'denied':
             displayError('Invalid Username or Pin');

@@ -1,0 +1,46 @@
+@import 'components/create-trade-modal.css';
+
+/* nav scrolling */
+.nav {
+    transition: border-bottom-left-radius 0.25s, border-bottom-right-radius 0.25s, background-color 0.25s, color 0.25s, box-shadow 0.25s;
+}
+.nav.scrolling {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0.05rem 0.2rem var(--shadow-color);
+}
+
+.nav .right {
+    float: right;
+    min-height: 3.5rem;
+    font-size: 0;
+}
+.nav .right .button {
+    display: inline-block;
+    height: 3rem;
+    margin: 0.25rem 0;
+    width: auto;
+}
+.nav .right .button {
+    margin-right: 1.25rem;
+}
+
+.modal-container {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--shadow-color-dark);
+    z-index: 9998;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation-duration: 0.35s;
+}
+.modal-container:not(.active) {
+    display: none;
+}
