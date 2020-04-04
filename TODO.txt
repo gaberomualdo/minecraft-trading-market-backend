@@ -1,0 +1,9 @@
+Routes:
+    POST    auth --> check user credentials         DONE
+    GET     log --> get log of data
+    GET     market --> get list of market items
+    POST    market --> create market item
+    PUT     market/item_id --> update market item
+
+Models:
+    MarketItem
