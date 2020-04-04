@@ -1,1 +1,2 @@
-"UniverseEmperor" created a new market item titled "A Market Item" at 2020-04-04T14:23:40.391Z
+"UniverseEmperor" created a new market item titled "A Market Item" at 2020-04-04T14:39:44.443Z
+"TestUsername" made an offer for "A Market Item" by trader "UniverseEmperor" for "I will buy this for some amount of goods." at 2020-04-04T14:39:53.598Z

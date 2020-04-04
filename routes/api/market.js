@@ -40,7 +40,9 @@ router.post(
             // add to log
             fs.appendFile(
                 './data/log.txt',
-                `"${marketItemFields.trader}" created a new market item titled "${marketItemFields.name}" at ${marketItemFields.date.toISOString()}`,
+                `"${marketItemFields.trader}" created a new market item titled "${
+                    marketItemFields.name
+                }" at ${marketItemFields.date.toISOString()}\n`,
                 (err) => {
                     if (err) return console.error(err.message);
                     console.log(`Updated Log at ${new Date().toISOString()}`);
@@ -134,9 +136,9 @@ router.post('/:item_id/offer', [auth, [check('content', 'Content is required.').
         // add to log
         fs.appendFile(
             './data/log.txt',
-            `"${newOffer.buyer}" made an offer for "${marketItem.name}" by trader "${marketItem.trader}" with the description "${
-                newOffer.description
-            }" at ${newOffer.date.toISOString()}`,
+            `"${newOffer.buyer}" made an offer for "${marketItem.name}" by trader "${marketItem.trader}" for "${
+                newOffer.content
+            }" at ${newOffer.date.toISOString()}\n`,
             (err) => {
                 if (err) return console.error(err.message);
                 console.log(`Updated Log at ${new Date().toISOString()}`);
@@ -208,7 +210,7 @@ router.post('/:item_id/winningoffer', [auth, [check('offerId', 'Offer ID is requ
             './data/log.txt',
             `"Trader "${marketItem.trader}" accepted the offer of "${winningOffer.description}" by buyer "${winningOffer.buyer}" for ${
                 marketItem.name
-            } at ${newOffer.date.toISOString()}`,
+            } at ${newOffer.date.toISOString()}\n`,
             (err) => {
                 if (err) return console.error(err.message);
                 console.log(`Updated Log at ${new Date().toISOString()}`);
