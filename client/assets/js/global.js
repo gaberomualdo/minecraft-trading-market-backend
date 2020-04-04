@@ -1,6 +1,6 @@
 const SERVER_BASE = 'http://localhost:7280';
 
-const verifyCredentials = async () => {
+const getAuthorizationHeader = () => {
     // get credentials from local storage
     const credentials = JSON.parse(localStorage.getItem('minecraft-trading-market-credentials'));
 
@@ -11,10 +11,14 @@ const verifyCredentials = async () => {
     // create authorization header
     const authorizationHeader = 'Basic ' + btoa(credentials.username + ':' + credentials.pin);
 
+    return authorizationHeader;
+};
+
+const verifyCredentials = async () => {
     const response = await fetch(SERVER_BASE + '/api/auth/', {
         method: 'GET',
         headers: new Headers({
-            Authorization: authorizationHeader,
+            Authorization: getAuthorizationHeader(),
             'Content-Type': 'application/x-www-form-urlencoded',
         }),
     });

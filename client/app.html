@@ -51,9 +51,15 @@
                         </svg>
                     </button>
                     <h1 class="title">Create a Trade</h1>
-                    <input type="text" class="input" placeholder="Trade Title (what you are selling)" spellcheck="false" />
-                    <textarea class="input" placeholder="Trade Description (what goods you want, etc.)" spellcheck="false"></textarea>
-                    <input type="button" value="Create &amp; Post Trade" class="button" />
+                    <p class="error">Invalid Credentials</p>
+                    <input type="text" class="input" placeholder="Trade Title (what you are selling)" spellcheck="false" name="name" />
+                    <textarea
+                        class="input"
+                        placeholder="Trade Description (what goods you want, etc.)"
+                        spellcheck="false"
+                        name="description"
+                    ></textarea>
+                    <input type="button" value="Post Trade to Market" class="button" name="create-trade" />
                     <p class="description">You cannot delete a trade after it is posted.</p>
                 </div>
             </div>

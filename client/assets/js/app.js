@@ -26,7 +26,7 @@
     });
 })();
 
-/* create a trade button functionality */
+/* create a trade nav button functionality */
 (() => {
     const createtradeButton = document.querySelector('.nav .right .create-trade');
     const createtradeModalContainer = document.querySelector('.create-trade-modal-container');
@@ -59,6 +59,60 @@
     document.addEventListener('click', (e) => {
         if (e.target == createtradeModalContainer && createtradeModalContainer.classList.contains('animated-in')) {
             closeModal();
+        }
+    });
+})();
+
+// create trade modal functionality
+(() => {
+    const errorElm = document.querySelector('.create-trade-modal .error');
+
+    // function to display error
+    const displayError = (text) => {
+        errorElm.innerText = text;
+        if (!errorElm.classList.contains('active')) {
+            errorElm.classList.add('active');
+        }
+    };
+
+    const nameInputElm = document.querySelector('.create-trade-modal input[name=name]');
+    const descriptionInputElm = document.querySelector('.create-trade-modal .input[name=description]');
+
+    const createTradeBtnElm = document.querySelector('.create-trade-modal .button[name=create-trade]');
+
+    createTradeBtnElm.addEventListener('click', async () => {
+        name = nameInputElm.value;
+        description = descriptionInputElm.value;
+
+        const response = await fetch(SERVER_BASE + '/api/market/', {
+            method: 'POST',
+            headers: new Headers({
+                Authorization: getAuthorizationHeader(),
+                'Content-Type': 'application/json',
+            }),
+            body: JSON.stringify({
+                name,
+                description,
+            }),
+        });
+
+        switch (response.status) {
+            case 200:
+                window.open('/../#yourtrades', '_self');
+                break;
+            case 401:
+                displayError('Invalid Account Sign-In');
+                break;
+            case 400:
+                const responseJSON = await response.json();
+                displayError(responseJSON.errors.map((item) => item.msg).join('\n'));
+                break;
+            case 500:
+                displayError('Server Error');
+                break;
+            default:
+                displayError(`Unknown Error: Status ${response.status}`);
+                console.log(await response.text());
         }
     });
 })();
