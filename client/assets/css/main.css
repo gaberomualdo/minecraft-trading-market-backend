@@ -11,10 +11,6 @@
 
 /* fonts */
 @font-face {
-    font-family: 'Minecrafter';
-    src: url('../fonts/Minecrafter.ttf');
-}
-@font-face {
     font-family: 'Minecraft';
     src: url('../fonts/Minecraft.otf');
 }

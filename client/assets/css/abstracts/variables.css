@@ -1,5 +1,6 @@
 :root {
     --white-color: #ffffff;
+    --white-color-sorta-transparent: rgba(255, 255, 255, 0.2);
     --white-color-somewhat-transparent: rgba(255, 255, 255, 0.3);
     --white-color-transparent: rgba(255, 255, 255, 0.1);
 

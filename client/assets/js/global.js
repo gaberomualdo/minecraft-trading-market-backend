@@ -1,8 +1,15 @@
 const SERVER_BASE = 'http://localhost:7280';
 
-const getAuthorizationHeader = () => {
+const getCredentials = () => {
     // get credentials from local storage
     const credentials = JSON.parse(localStorage.getItem('minecraft-trading-market-credentials'));
+
+    return credentials;
+};
+
+const getAuthorizationHeader = () => {
+    // get credentials
+    const credentials = getCredentials();
 
     if (!credentials) {
         return 'denied';
@@ -44,7 +51,7 @@ const setCredentials = (username, pin) => {
 window.addEventListener('load', () => {
     (async () => {
         if ((await verifyCredentials()) == 'accepted') {
-            if (!window.location.href.toString().endsWith('app.html')) {
+            if (!(window.location.href.toString().indexOf('app.html') > -1)) {
                 window.open('app.html', '_self');
             }
         } else {
