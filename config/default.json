@@ -1,6 +1,7 @@
 {
     "mongoURI": "mongodb+srv://fred:Uj4j0RhfjXz4ggwr@minecrafttradingmarket-mewrt.mongodb.net/test?retryWrites=true&w=majority",
     "authUsers": {
-        "UniverseEmperor": "460405"
+        "UniverseEmperor": "460405",
+        "TestUsername": "360688"
     }
 }

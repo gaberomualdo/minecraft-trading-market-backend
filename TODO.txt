@@ -1,9 +1,10 @@
 Routes:
-    POST    auth --> check user credentials         DONE
-    GET     log --> get log of data
-    GET     market --> get list of market items
-    POST    market --> create market item
-    PUT     market/item_id --> update market item
+    POST    auth --> check user credentials                     DONE
+    GET     log --> get log of data                             DONE
+    GET     market --> get list of market items                 DONE
+    POST    market --> create market item                       DONE
+    POST    market/:item_id/offer --> add offer to item         DONE
+    POST    market/:item_id/winningoffer --> add winning offer  DONE
 
 Models:
     MarketItem
