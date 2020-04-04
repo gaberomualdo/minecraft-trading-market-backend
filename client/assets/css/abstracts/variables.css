@@ -1,0 +1,8 @@
+:root {
+    --white-color: #ffffff;
+    --white-color-transparent: rgba(255, 255, 255, 0.1);
+
+    --theme-color: #34aa2f;
+
+    --link-color: #41a8ff;
+}
