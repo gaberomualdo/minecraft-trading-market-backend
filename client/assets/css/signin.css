@@ -1,3 +1,9 @@
+body {
+    background-image: linear-gradient(var(--shadow-color), var(--shadow-color)), url('../img/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -7,7 +13,7 @@
     width: 30rem;
     max-width: 100%;
     position: absolute;
-    top: 47.5%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
