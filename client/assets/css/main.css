@@ -6,6 +6,9 @@
 @import 'components/nav.css';
 @import 'components/footer.css';
 
+@import 'components/input.css';
+@import 'components/button.css';
+
 /* fonts */
 @font-face {
     font-family: 'Minecrafter';

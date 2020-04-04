@@ -22,12 +22,12 @@
     padding: 0 0.75rem;
 }
 .nav .logo,
-.nav .logo * {
+.nav .logo > * {
     display: block;
     min-height: 3.5rem;
     float: left;
 }
-.nav .logo *:not(:last-child) {
+.nav .logo > *:not(:last-child) {
     margin-right: 1.25rem;
 }
 
