@@ -3,6 +3,7 @@
     --white-color-sorta-transparent: rgba(255, 255, 255, 0.2);
     --white-color-somewhat-transparent: rgba(255, 255, 255, 0.3);
     --white-color-transparent: rgba(255, 255, 255, 0.1);
+    --white-color-more-transparent: rgba(255, 255, 255, 0.05);
 
     --shadow-color: rgba(0, 0, 0, 0.35);
     --shadow-color-dark: rgba(0, 0, 0, 0.5);
@@ -15,6 +16,7 @@
     --medium-color: #717171;
 
     --theme-color: #34aa2f;
+    --theme-color-transparent: rgba(52, 170, 47, 0.75);
     --dark-theme-color: #298825;
 
     --link-color: #41a8ff;

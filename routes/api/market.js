@@ -60,7 +60,24 @@ router.post(
 // @access  Private
 router.get('/', auth, async (req, res) => {
     try {
-        const marketItems = await MarketItem.find();
+        let marketItems = JSON.parse(JSON.stringify(await MarketItem.find()));
+
+        // remove offers list if trader is not current user
+        // add hasOffer as true if offers include one by current user
+        marketItems.forEach((item, ind) => {
+            marketItems[ind].hasOffer = false;
+
+            if (item.trader != req.user.username) {
+                item.offers.forEach((offer) => {
+                    if (offer.buyer == req.user.username) {
+                        marketItems[ind].hasOffer = true;
+                    }
+                });
+
+                delete marketItems[ind].offers;
+            }
+        });
+
         res.json(marketItems);
     } catch (err) {
         console.error(err.message);
@@ -124,26 +141,14 @@ router.post('/:item_id/offer', [auth, [check('content', 'Content is required.').
         });
 
         if (currentBuyerOfferIndex > -1) {
-            marketItem.offers[currentBuyerOfferIndex] = newOffer;
-        } else {
-            marketItem.offers.unshift(newOffer);
+            marketItem.offers.splice(currentBuyerOfferIndex, 1);
         }
+
+        marketItem.offers.unshift(newOffer);
 
         await marketItem.save();
 
         res.json(marketItem);
-
-        // add to log
-        fs.appendFile(
-            './data/log.txt',
-            `"${newOffer.buyer}" made an offer for "${marketItem.name}" by trader "${marketItem.trader}" for "${
-                newOffer.content
-            }" at ${newOffer.date.toISOString()}\n`,
-            (err) => {
-                if (err) return console.error(err.message);
-                console.log(`Updated Log at ${new Date().toISOString()}`);
-            }
-        );
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

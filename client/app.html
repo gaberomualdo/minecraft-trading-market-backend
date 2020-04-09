@@ -29,6 +29,8 @@
     </head>
     <body>
         <div class="container">
+            <p class="notifier">Offer Successfully Created</p>
+
             <nav class="nav">
                 <div class="logo">
                     <img src="assets/img/icon.png" alt="Minecraft Trading Market Logo" />
@@ -53,13 +55,8 @@
                     </button>
                     <h1 class="title">Create a Trade</h1>
                     <p class="error">Invalid Credentials</p>
-                    <input type="text" class="input" placeholder="Trade Title (what you are selling)" spellcheck="false" name="name" />
-                    <textarea
-                        class="input"
-                        placeholder="Trade Description (what goods you want, etc.)"
-                        spellcheck="false"
-                        name="description"
-                    ></textarea>
+                    <input type="text" class="input" placeholder="What You Are Selling" spellcheck="false" name="name" />
+                    <textarea class="input" placeholder="What Goods You Want" spellcheck="false" name="description"></textarea>
                     <input type="button" value="Post Trade to Market" class="button" name="create-trade" />
                     <p class="description">You cannot delete a trade after it is posted.</p>
                 </div>
@@ -85,14 +82,14 @@
                     </li>
                 </ul>
                 <div class="tabs">
-                    <div class="tab active-trades">
-                        <h1>Active Trades</h1>
+                    <div class="tab market-item-list active-trades">
+                        <h1 class="title">Active Trades</h1>
                     </div>
-                    <div class="tab completed-trades">
-                        <h1>Completed Trades</h1>
+                    <div class="tab market-item-list completed-trades">
+                        <h1 class="title">Completed Trades</h1>
                     </div>
-                    <div class="tab your-trades">
-                        <h1>Your Trades</h1>
+                    <div class="tab market-item-list your-trades">
+                        <h1 class="title">Your Trades</h1>
                     </div>
                     <div class="tab notifications entrylist-tab">
                         <h1 class="title">Notifications</h1>
@@ -105,7 +102,7 @@
 
             <footer class="footer">
                 <p class="left">Built by <a href="https://xtrp.io/">Fred Adams</a></p>
-                <p class="right">&copy; 2020&ndash;Present</p>
+                <p class="right">&copy; xtrp.io 2020&ndash;Present</p>
             </footer>
         </div>
 

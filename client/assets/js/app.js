@@ -1,3 +1,15 @@
+/* display notifier */
+const displayOnNotifier = (text) => {
+    const notifierElm = document.querySelector('.notifier');
+    notifierElm.innerText = text;
+    notifierElm.classList.add('active');
+    setTimeout(() => {
+        if (notifierElm.classList.contains('active')) {
+            notifierElm.classList.remove('active');
+        }
+    }, 2500);
+};
+
 /* show scrolling nav when scrolling */
 (() => {
     const navElm = document.querySelector('nav');
@@ -17,9 +29,13 @@
     window.addEventListener('scroll', checkNavType);
 })();
 
-/* sign out button functionality */
+/* sign out button functionality and text */
 (() => {
     const signOutButton = document.querySelector('.nav .right .sign-out');
+    const usernameSpan = document.createElement('span');
+    usernameSpan.innerText = ` (${getCredentials().username})`;
+    usernameSpan.style.opacity = 0.65;
+    signOutButton.appendChild(usernameSpan);
     signOutButton.addEventListener('click', () => {
         localStorage.setItem('minecraft-trading-market-credentials', null);
         window.open('/../', '_self');
@@ -98,7 +114,10 @@
 
         switch (response.status) {
             case 200:
-                window.open('/../#your-trades', '_self');
+                fireDOMEvent(document.querySelector('.create-trade-modal .close-button'), 'click');
+                displayOnNotifier('Trade Successfully Created');
+                refreshLogAndNotifications();
+                refreshMarketItems();
                 break;
             case 401:
                 displayError('Invalid Account Sign-In');
@@ -168,11 +187,14 @@
 })();
 
 // log and notifications tab
-(async () => {
+const refreshLogAndNotifications = async () => {
     const username = getCredentials().username;
 
     const logTabElm = document.querySelector('.app > .tabs > .tab.log');
     const notificationsTabElm = document.querySelector('.app > .tabs > .tab.notifications');
+
+    notificationsTabElm.innerHTML = `<h1 class="title">Notifications</h1>`;
+    logTabElm.innerHTML = `<h1 class="title">Log</h1>`;
 
     const response = await fetch(SERVER_BASE + '/api/log/', {
         method: 'GET',
@@ -183,7 +205,8 @@
     });
 
     const log = await response.text();
-    const logEntries = log.split('\n').filter((line) => line.length > 0);
+    let logEntries = log.split('\n').filter((line) => line.length > 0);
+    logEntries = logEntries.reverse();
 
     const notifications = [];
 
@@ -224,4 +247,197 @@
     notifications.forEach((entry) => {
         notificationsTabElm.appendChild(createEntryDOMElm(entry));
     });
-})();
+};
+
+// display trades in correct boxes
+const refreshMarketItems = async () => {
+    const response = await fetch(SERVER_BASE + '/api/market/', {
+        method: 'GET',
+        headers: new Headers({
+            Authorization: getAuthorizationHeader(),
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }),
+    });
+
+    let marketItems = await response.json();
+    marketItems = marketItems.reverse();
+
+    // elm variables
+    const activeTradesTabElm = document.querySelector('.app .tabs .active-trades');
+    const completedTradesTabElm = document.querySelector('.app .tabs .completed-trades');
+    const yourTradesTabElm = document.querySelector('.app .tabs .your-trades');
+
+    activeTradesTabElm.innerHTML = `<h1 class="title">Active Trades</h1>`;
+    completedTradesTabElm.innerHTML = `<h1 class="title">Completed Trades</h1>`;
+    yourTradesTabElm.innerHTML = `<h1 class="title">Your Trades</h1>`;
+
+    // generate market item box HTML
+    const generateMarketItemHTML = (id, name, description, trader, date, sold, offers, winningOffer, hasOffer) => {
+        let mainDate = moment(date).calendar();
+        if (sold) {
+            mainDate = 'Sold ' + moment(winningOffer.winDate).calendar();
+        }
+
+        let makeOfferHTML = '';
+        if (!sold && trader != getCredentials().username) {
+            let offerText = 'Make Offer';
+            if (hasOffer) {
+                offerText = 'Replace Existing Offer';
+            }
+            makeOfferHTML = `
+            <div class='make-offer'>
+                <h1>Make An Offer</h1>
+                <p class="error"></p>
+                <textarea spellcheck="false" placeholder="Enter offer content (what you're willing to give)" class="input"></textarea>
+                <button class="button" onclick='makeOffer(this.parentElement, "${id}")'>${offerText}</button>
+            </div>
+            `;
+        }
+
+        let offersHTML = '';
+        if (trader == getCredentials().username && !sold) {
+            offersHTML = `<div class='offers'><h1 class='title'>Offers:</h1>`;
+            offers.forEach((offer) => {
+                offersHTML += `
+                <div class='offer'>
+                    <p class='date'>${moment(offer.date).calendar()}</p>
+                    <p class='content'>${escapeHTML(offer.content).replace(/\n/g, '<br />')}</p>
+                    <div class='bottom'>
+                        <p class='buyer'>From ${escapeHTML(offer.buyer)}</p>
+                        <button class='button accept' onclick='acceptOffer("${id}", "${offer.id}")'>Accept</button>
+                    </div>
+                </div>
+                `;
+            });
+            if (offers.length <= 0) {
+                offersHTML += "<p class='none-found'>No Offers Made Yet</p>";
+            }
+            offersHTML += '</div>';
+        }
+
+        let winningOfferHTML = '';
+        if (sold && winningOffer) {
+            winningOfferHTML = `
+            <div class='winning-offer'>
+                <h1 class='title'>Sold to <strong>${escapeHTML(winningOffer.buyer)}</strong> for:</h1>
+                <p class='content'>${escapeHTML(winningOffer.content).replace(/\n/g, '<br />')}</p>
+            </div>
+            `;
+        }
+
+        return `
+        <div class='market-item'>
+            <p class='date'>${mainDate}</p>
+            <div class='is-selling'>
+                <h1 class='title'><img src='assets/img/profiles/${escapeHTML(trader)}.png' alt='Profile Picture' /><span class='text'>${escapeHTML(
+            trader
+        )} is selling:</span></h1>
+                <p class='content'>${escapeHTML(name)}</p>
+            </div>
+            <div class='for'>
+                <h1 class='title'>For:</h1>
+                <p class='content'>${escapeHTML(description).replace(/\n/g, '<br />')}</p>
+            </div>
+            ${makeOfferHTML}
+            ${offersHTML}
+            ${winningOfferHTML}
+        </div>
+        `;
+    };
+
+    // loop through market items and display
+    marketItems.forEach((item) => {
+        if (item.sold) {
+            // put in completed trades
+            completedTradesTabElm.innerHTML += generateMarketItemHTML(
+                item._id,
+                item.name,
+                item.description,
+                item.trader,
+                item.date,
+                item.sold,
+                item.offers,
+                item.winningOffer,
+                item.hasOffer
+            );
+        } else if (item.trader == getCredentials().username) {
+            // put in your trades
+            yourTradesTabElm.innerHTML += generateMarketItemHTML(
+                item._id,
+                item.name,
+                item.description,
+                item.trader,
+                item.date,
+                item.sold,
+                item.offers,
+                item.winningOffer,
+                item.hasOffer
+            );
+        } else {
+            // put in active trades
+            activeTradesTabElm.innerHTML += generateMarketItemHTML(
+                item._id,
+                item.name,
+                item.description,
+                item.trader,
+                item.date,
+                item.sold,
+                item.offers,
+                item.winningOffer,
+                item.hasOffer
+            );
+        }
+    });
+};
+
+// make offer
+const makeOffer = async (offerParentElm, marketId) => {
+    const response = await fetch(`${SERVER_BASE}/api/market/${marketId}/offer`, {
+        method: 'POST',
+        headers: new Headers({
+            Authorization: getAuthorizationHeader(),
+            'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({
+            content: offerParentElm.querySelector('textarea').value,
+        }),
+    });
+
+    if (response.status == 200) {
+        displayOnNotifier('Offer Made Successfully');
+        refreshLogAndNotifications();
+        refreshMarketItems();
+    } else {
+        const errors = (await response.json()).errors;
+        offerParentElm.querySelector('.error').innerText = errors.map((item) => item.msg).join('\n');
+        offerParentElm.querySelector('.error').classList.add('active');
+    }
+};
+
+// accept offer
+const acceptOffer = async (marketId, offerId) => {
+    const response = await fetch(`${SERVER_BASE}/api/market/${marketId}/winningoffer`, {
+        method: 'POST',
+        headers: new Headers({
+            Authorization: getAuthorizationHeader(),
+            'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({
+            offerId,
+        }),
+    });
+
+    if (response.status == 200) {
+        displayOnNotifier('Offer Accepted Successfully');
+        refreshLogAndNotifications();
+        refreshMarketItems();
+    } else {
+        const errorJSON = await response.json();
+        alert(`An error occurred with the code ${response.status}. More info has been logged to the console.`);
+        console.error(errorJSON);
+    }
+};
+
+// start site
+refreshLogAndNotifications();
+refreshMarketItems();
