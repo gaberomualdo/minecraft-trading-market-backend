@@ -3,7 +3,8 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const uuid = require('uuid');
-const fs = require('fs');
+
+const createLogItem = require('./createLogItem');
 
 const MarketItem = require('../../models/MarketItem');
 
@@ -38,16 +39,7 @@ router.post(
             res.json(marketItem);
 
             // add to log
-            fs.appendFile(
-                './data/log.txt',
-                `"${marketItemFields.trader}" created a new market item titled "${
-                    marketItemFields.name
-                }" at ${marketItemFields.date.toISOString()}\n`,
-                (err) => {
-                    if (err) return console.error(err.message);
-                    console.log(`Updated Log at ${new Date().toISOString()}`);
-                }
-            );
+            createLogItem(`"${marketItemFields.trader}" created a new market item titled "${marketItemFields.name}"`, marketItemFields.date);
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server Error');
@@ -211,15 +203,9 @@ router.post('/:item_id/winningoffer', [auth, [check('offerId', 'Offer ID is requ
         res.json(marketItem);
 
         // add to log
-        fs.appendFile(
-            './data/log.txt',
-            `"Trader "${marketItem.trader}" accepted the offer of "${winningOffer.description}" by buyer "${winningOffer.buyer}" for ${
-                marketItem.name
-            } at ${newOffer.date.toISOString()}\n`,
-            (err) => {
-                if (err) return console.error(err.message);
-                console.log(`Updated Log at ${new Date().toISOString()}`);
-            }
+        createLogItem(
+            `"Trader "${marketItem.trader}" accepted the offer of "${winningOffer.description}" by buyer "${winningOffer.buyer}" for "${marketItem.name}"`,
+            winningOffer.winDate
         );
     } catch (err) {
         console.error(err.message);
